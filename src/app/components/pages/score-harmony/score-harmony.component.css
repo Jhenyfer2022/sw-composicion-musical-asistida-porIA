@@ -1,0 +1,20 @@
+/* Estilo para el contenedor de la partitura */
+#osmdContainer {
+  width: 100%;
+  min-height: 300px;
+  overflow-x: auto;
+  background-color: white;
+}
+
+/* Estilos para SVG generado por OSMD */
+#osmdContainer svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mejoras para el textarea */
+textarea {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}

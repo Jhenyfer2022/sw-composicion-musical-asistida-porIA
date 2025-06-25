@@ -1,0 +1,136 @@
+<!-- <h2 class="text-2xl font-bold mb-4">{{ editingId ? 'Editar' : 'Nueva' }} Partitura</h2>
+
+<form (ngSubmit)="saveScore()" class="space-y-4">
+  <input [(ngModel)]="score.title" name="title" placeholder="Título" class="w-full border p-2 rounded" required>
+
+  <input [(ngModel)]="score.composer" name="composer" placeholder="Compositor" class="w-full border p-2 rounded">
+
+  <input [(ngModel)]="score.instrumentation" name="instrumentation" placeholder="Instrumentación" class="w-full border p-2 rounded">
+
+  <div class="grid grid-cols-2 gap-4">
+    <select [(ngModel)]="score.clef" name="clef" class="border p-2 rounded">
+      <option value="G">Clave de Sol</option>
+      <option value="F">Clave de Fa</option>
+      <option value="C">Clave de Do</option>
+    </select>
+
+    <input [(ngModel)]="score.timeSignature" name="timeSignature" placeholder="Compás (Ej: 4/4)" class="border p-2 rounded">
+
+    <input [(ngModel)]="score.keySignature" name="keySignature" placeholder="Armadura (Ej: C, G, Dm)" class="border p-2 rounded">
+  </div>
+
+  <label class="flex items-center gap-2">
+    <input type="checkbox" [(ngModel)]="score.isPublic" name="isPublic">
+    ¿Partitura pública?
+  </label>
+
+  <button type="button"
+          (click)="generateMusicXmlTemplate()"
+          class="bg-indigo-500 text-white px-4 py-2 rounded">
+    Generar plantilla MusicXML
+  </button>
+  <div class="flex gap-4 items-center mt-2">
+      <button
+        class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg"
+        (click)="isRecording ? stopAudioRecording() : startAudioRecording()">
+        {{ isRecording ? 'Detener grabación' : '🎙️ Generar por voz' }}
+      </button>
+      <span *ngIf="isRecording" class="text-red-500 font-semibold animate-pulse">Grabando...</span>
+    </div>
+
+  <div class="mt-6">
+    <h3 class="text-lg font-semibold mb-2">Vista previa de la partitura</h3>
+    <div #osmdContainer class="border rounded p-2 bg-white shadow overflow-auto" style="min-height: 300px"></div>
+  </div>
+
+  <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Guardar</button>
+</form> -->
+
+<h2 class="text-2xl font-bold mb-4">{{ editingId ? 'Editar' : 'Nueva' }} Partitura</h2>
+
+<form (ngSubmit)="saveScore()" class="space-y-4">
+  <!-- Título -->
+  <div>
+    <label for="title" class="block text-sm font-medium mb-1">Título</label>
+    <input [(ngModel)]="score.title" name="title" id="title" class="w-full border p-2 rounded" required />
+  </div>
+
+  <!-- Compositor -->
+  <div>
+    <label for="composer" class="block text-sm font-medium mb-1">Compositor</label>
+    <input [(ngModel)]="score.composer" name="composer" id="composer" class="w-full border p-2 rounded" />
+  </div>
+
+  <!-- Instrumentación -->
+  <div>
+    <label for="instrumentation" class="block text-sm font-medium mb-1">Instrumentación</label>
+    <input [(ngModel)]="score.instrumentation" name="instrumentation" id="instrumentation" class="w-full border p-2 rounded" />
+  </div>
+
+  <!-- Parámetros musicales -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Clave -->
+    <div>
+      <label for="clef" class="block text-sm font-medium mb-1">Clave</label>
+      <select [(ngModel)]="score.clef" name="clef" id="clef" class="w-full border p-2 rounded">
+        <option *ngFor="let option of clefOptions" [value]="option.value">
+          {{ option.label }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Compás -->
+    <div>
+      <label for="timeSignature" class="block text-sm font-medium mb-1">Compás</label>
+      <input [(ngModel)]="score.timeSignature" name="timeSignature" id="timeSignature" placeholder="Ej: 4/4" class="w-full border p-2 rounded" />
+    </div>
+
+    <!-- Armadura -->
+    <div>
+      <label for="keySignature" class="block text-sm font-medium mb-1">Armadura</label>
+      <select [(ngModel)]="score.keySignature" name="keySignature" id="keySignature" class="w-full border p-2 rounded">
+        <option *ngFor="let key of keySignatureOptions" [value]="key.value">
+          {{ key.label }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Visibilidad -->
+  <div>
+    <label class="inline-flex items-center gap-2 mt-2">
+      <input type="checkbox" [(ngModel)]="score.isPublic" name="isPublic" />
+      <span class="text-sm">¿Partitura pública?</span>
+    </label>
+  </div>
+
+  <!-- Botones -->
+  <div class="flex flex-wrap gap-4 mt-4">
+    <button type="button"
+            (click)="generateMusicXmlTemplate()"
+            class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded">
+      Generar plantilla MusicXML
+    </button>
+
+    <button type="button"
+            class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg"
+            (click)="isRecording ? stopAudioRecording() : startAudioRecording()">
+      {{ isRecording ? 'Detener grabación' : '🎙️ Generar por voz' }}
+    </button>
+
+    <span *ngIf="isRecording" class="text-red-500 font-semibold animate-pulse self-center">Grabando...</span>
+  </div>
+
+  <!-- Vista previa -->
+  <div class="mt-6">
+    <h3 class="text-lg font-semibold mb-2">Vista previa de la partitura</h3>
+    <div #osmdContainer class="border rounded p-2 bg-white shadow overflow-auto" style="min-height: 300px"></div>
+  </div>
+
+  <!-- Guardar -->
+  <div class="mt-4">
+    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition">
+      Guardar
+    </button>
+  </div>
+</form>
